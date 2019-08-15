@@ -3,20 +3,17 @@
 
     <h4>Welcome!</h4>
     
-    <div id="piechart">
-      <GChart 
+    <div id="barchart" v-if="chartData.length > 1">
+        <GChart 
         type = "BarChart"
-        :data =  "studentHour"
-        :options = "hoursChartOptions"
+        :data = "chartData"
+        :options = "chartOptions"
         />
     </div>
 
-    <ul>
-      <li 
-        v-for="i of studentrecords" :key="i['.key']">
-          {{i.hour}}
-        </li>
-    </ul>   
+     <ul>
+         <li v-for="(record) in studentRecords" :key="record.eventID">{{record.studentID}}</li>
+     </ul>
 
   </div>
 </template>
@@ -32,12 +29,13 @@ export default {
   },
   data() {
     return {
-      
-      studentHour: [
-        ["Student Hour Bar", "Hours"],
-        // ["Hours",this.totalHours]
+      studentID: "1234",
+      totalHours: 0,
+      studentRecords: [],
+      chartData: [
+        ["Student Hour Bar", "Hours"]
       ],
-      hoursChartOptions: {
+      chartOptions: {
         hAxis:{
           minValue:0,
           maxValue: 100
@@ -50,17 +48,29 @@ export default {
       }
     }
   },
-  computed: {
-    totalHours: function() {
-        let hours = 0;
-        for (i of this.$firestore.studentrecords) {
-          hours += i.hours
-        }
-        console.log(hours)
-        return hours
-      }
+  methods: {
+
+  },
+  created() {
+      let ref = db.collection('events').where('studentID','==',this.studentID)
+      ref.get()
+      .then(snapshot => {
+          console.log(snapshot)
+          snapshot.forEach(doc => {
+              let studentRecord = doc.data()
+              studentRecord.eventID = doc.id
+              this.studentRecords.push(studentRecord)
+          })
+      })
+      .then(() => {
+          this.studentRecords.forEach(record => {
+              this.totalHours += record.hours
+          })
+          this.chartData.push(["Hours",this.totalHours])
+      })
   },
   beforeMount() {
+
   }
 }
 </script>
