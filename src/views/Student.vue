@@ -1,9 +1,10 @@
 <template>
-  <div class="student-view">
+  <div class="student-view container">
 
     <h4>Welcome!</h4>
     
     <div id="barchart" v-if="chartData.length > 1">
+        <h3>Total Community Service Hours Earned</h3>
         <GChart 
         type = "BarChart"
         :data = "chartData"
@@ -36,15 +37,21 @@ export default {
         ["Student Hour Bar", "Hours"]
       ],
       chartOptions: {
+        animation: {
+            startup: true,
+            duration: 1500,
+            easing: 'out'
+        },
         hAxis:{
           minValue:0,
           maxValue: 100
         },
-        chart: {
-          title: 'Overall Community Service Progress',
-          height: 500,
-          width: 500
+        legend: {position: "none"},
+        chartArea: {
+            height: 100,
+            width: 400
         }
+        
       }
     }
   },
@@ -66,7 +73,7 @@ export default {
           this.studentRecords.forEach(record => {
               this.totalHours += record.hours
           })
-          this.chartData.push(["Hours",this.totalHours])
+          this.chartData.push(["",this.totalHours])
       })
   },
   beforeMount() {
@@ -76,4 +83,11 @@ export default {
 </script>
 
 <style>
+.barchart {
+    text-align:center;
+}
+
+.barchart h3 {
+    text-align: center;
+}
 </style>
