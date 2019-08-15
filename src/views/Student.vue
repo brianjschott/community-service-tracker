@@ -1,19 +1,27 @@
 <template>
   <div class="student-view container">
 
-    <h4>Welcome!</h4>
-    
-    <div id="barchart" v-if="chartData.length > 1">
-        <h3>Total Community Service Hours Earned</h3>
+    <h2 v-if="volunteerRecord">Volunteer View: {{ volunteerRecord.firstName }} {{volunteerRecord.lastName }}</h2>
+    <p v-if="feedback" class="red-text">{{ feedback }}</p>
+    <div id="barchart" v-if="hoursChartData.length > 1">
+        <h4>Total Community Service Hours Earned</h4>
         <GChart 
         type = "BarChart"
-        :data = "chartData"
-        :options = "chartOptions"
+        :data = "hoursChartData"
+        :options = "hoursChartOptions"
         />
     </div>
-
+    <div id="data-table">
+      <h4>Detailed Records</h4>
+      <GChart
+      type = "Table"
+      :data = "eventRecordsForChart"
+      :options = "recordsTableOptions"
+      ref = "recordsChartRef"
+      />
+    </div>
      <ul>
-         <li v-for="(record) in studentRecords" :key="record.eventID">{{record.studentID}}</li>
+         <li v-for="(record) in eventRecords" :key="record.eventID">{{record.volunteerID}}</li>
      </ul>
 
   </div>
@@ -30,13 +38,16 @@ export default {
   },
   data() {
     return {
-      studentID: "1234",
+      feedback: null,
+      volunteerID: "1234",
+      volunteerRecord: null,
       totalHours: 0,
-      studentRecords: [],
-      chartData: [
+      eventRecords: [],
+      eventRecordsForChart: [],
+      hoursChartData: [
         ["Student Hour Bar", "Hours"]
       ],
-      chartOptions: {
+      hoursChartOptions: {
         animation: {
             startup: true,
             duration: 1500,
@@ -52,6 +63,9 @@ export default {
             width: 400
         }
         
+      },
+      recordsTableOptions: {
+
       }
     }
   },
@@ -59,24 +73,51 @@ export default {
 
   },
   created() {
-      let ref = db.collection('events').where('studentID','==',this.studentID)
+      //get student ID of logged-in student
+
+
+      //get data for specific student
+      let ref = db.collection('events').where('volunteerID','==',this.volunteerID)
       ref.get()
       .then(snapshot => {
-          console.log(snapshot)
           snapshot.forEach(doc => {
-              let studentRecord = doc.data()
-              studentRecord.eventID = doc.id
-              this.studentRecords.push(studentRecord)
+              let eventRecord = doc.data()
+              eventRecord.eventID = doc.id
+              this.eventRecords.push(eventRecord)
           })
+
       })
+      //tallies up all hours for events into totalHours
+      //also pushes each object as an array, onto a separate array to be given directly to the chart
+      //this should probably be in computed with the v-if directive hiding chart until it loads
       .then(() => {
-          this.studentRecords.forEach(record => {
+          //takes first item in eventRecords and makes the keys the headers for the table
+          this.eventRecordsForChart.push(Object.keys(this.eventRecords[0]))
+          this.eventRecords.forEach(record => {
               this.totalHours += record.hours
+              //pushes object values for the chart
+              this.eventRecordsForChart.push(Object.values(record))
           })
-          this.chartData.push(["",this.totalHours])
+          //pushes the only record needed for bar chart
+          this.hoursChartData.push(["",this.totalHours])
       })
   },
   beforeMount() {
+
+    //get doc with the corresponding volunteer ID
+    //need to handle better case of this returning no volunteer record
+    db.collection('volunteers').doc(this.volunteerID).get()
+    .then( doc => {
+      this.feedback = null
+      this.volunteerRecord = doc.data()
+    })
+    .catch( err => {
+      this.feedback = "No student with this ID"
+      console.log("Error with retrieving volunteer with that ID: ", err)
+    })
+  },
+  mounted() {
+
 
   }
 }
@@ -87,7 +128,7 @@ export default {
     text-align:center;
 }
 
-.barchart h3 {
+.barchart h4 {
     text-align: center;
 }
 </style>
