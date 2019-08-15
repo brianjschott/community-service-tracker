@@ -70,7 +70,11 @@ export default {
     }
   },
   methods: {
-
+    capitalizeChartHeaders() {
+      this.eventRecordsForChart[0].forEach((item, index) => {
+        this.eventRecordsForChart[0][index] = item.charAt(0).toUpperCase() + item.slice(1)
+      })
+    }
   },
   created() {
       //get student ID of logged-in student
@@ -92,7 +96,10 @@ export default {
       //this should probably be in computed with the v-if directive hiding chart until it loads
       .then(() => {
           //takes first item in eventRecords and makes the keys the headers for the table
+          
           this.eventRecordsForChart.push(Object.keys(this.eventRecords[0]))
+          this.capitalizeChartHeaders()
+
           this.eventRecords.forEach(record => {
               this.totalHours += record.hours
               //pushes object values for the chart
@@ -117,7 +124,6 @@ export default {
     })
   },
   mounted() {
-
 
   }
 }
