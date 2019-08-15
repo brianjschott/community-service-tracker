@@ -3,7 +3,7 @@
 
     <h2 v-if="volunteerRecord">Volunteer View: {{ volunteerRecord.firstName }} {{volunteerRecord.lastName }}</h2>
     <p v-if="feedback" class="red-text">{{ feedback }}</p>
-    <div id="barchart" v-if="hoursChartData.length > 1">
+    <div class="barchart" v-if="hoursChartData.length > 1">
         <h4>Total Community Service Hours Earned</h4>
         <GChart 
         type = "BarChart"
@@ -11,7 +11,7 @@
         :options = "hoursChartOptions"
         />
     </div>
-    <div id="data-table">
+    <div class="data-table">
       <h4>Detailed Records</h4>
       <GChart
       type = "Table"
@@ -20,9 +20,7 @@
       ref = "recordsChartRef"
       />
     </div>
-     <ul>
-         <li v-for="(record) in eventRecords" :key="record.eventID">{{record.volunteerID}}</li>
-     </ul>
+ 
 
   </div>
 </template>
@@ -65,8 +63,8 @@ export default {
         
       },
       recordsTableOptions: {
-
-      }
+        alternatingRowStyle: true,
+        page: "enable"      }
     }
   },
   methods: {
@@ -137,4 +135,10 @@ export default {
 .barchart h4 {
     text-align: center;
 }
+
+.data-table {
+  text-align: center;
+}
+
+
 </style>
