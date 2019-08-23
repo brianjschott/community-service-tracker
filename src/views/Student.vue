@@ -77,9 +77,6 @@ export default {
       this.eventRecordsForChart[0].forEach((item, index) => {
         this.eventRecordsForChart[0][index] = item.charAt(0).toUpperCase() + item.slice(1)
       })
-    },
-    toggleAddHoursModal() {
-      this.$refs.studentAddHoursModal.open()
     }
   },
   created() {
