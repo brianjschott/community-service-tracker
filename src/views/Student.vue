@@ -1,6 +1,7 @@
 <template>
   <div class="student-view container">
-
+    <StudentNavbar />
+    <StudentAddHours />
     <h2 v-if="volunteerRecord">Volunteer View: {{ volunteerRecord.firstName }} {{volunteerRecord.lastName }}</h2>
     <p v-if="feedback" class="red-text">{{ feedback }}</p>
     <div class="barchart" v-if="hoursChartData.length > 1">
@@ -28,11 +29,15 @@
 <script>
 import { GChart } from 'vue-google-charts'
 import db from '@/firebase/init'
+import StudentAddHours from '@/components/StudentAddHours'
+import StudentNavbar from '@/components/StudentNavbar'
 
 export default {
   props: [],
   components: { 
-    GChart
+    GChart,
+    StudentAddHours,
+    StudentNavbar
   },
   data() {
     return {
@@ -72,6 +77,9 @@ export default {
       this.eventRecordsForChart[0].forEach((item, index) => {
         this.eventRecordsForChart[0][index] = item.charAt(0).toUpperCase() + item.slice(1)
       })
+    },
+    toggleAddHoursModal() {
+      this.$refs.studentAddHoursModal.open()
     }
   },
   created() {

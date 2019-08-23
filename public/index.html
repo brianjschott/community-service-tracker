@@ -16,5 +16,28 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+
+    <!-- materialize JS front-end scripts -->
+    <script>
+      //tooltips
+      tooltipOptions = {
+
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.tooltipped');
+        var instances = M.Tooltip.init(elems, tooltipOptions);
+      });
+
+      modalOptions = {
+
+      }
+
+      //modals
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems, modalOptions);
+      });      
+    </script>
   </body>
 </html>
