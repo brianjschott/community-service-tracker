@@ -1,29 +1,18 @@
 # community-service-tracker
 
-## Project setup
-```
-npm install
-```
+## Description
+This webapp is designed to track students' community service hours over time and allow community-service supervisors to maintain and authorize student records. This app is a learning experience for us so there will likely be some mistakes along the way.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Students should post the hours, which should generate a link that the partner can verify/report, which should then generate a request for an admin to also verify said hours.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+Special thanks to my students at my former school, Bronx Academy for Software Engineering, for helping with the concept, design, and coding of this app.
 
-### Run your tests
-```
-npm run test
-```
+## Project To-Do
 
-### Lints and fixes files
-```
-npm run lint
-```
+- Page for students to add hours
+- Page for students to sign up
+- Page for students to login
+- Page for administrators to sign up and login
+- Page for Administrators to view all student records, search for unverified records, and add them
+- Page for community service partners to verify hours and give students their performance review
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
