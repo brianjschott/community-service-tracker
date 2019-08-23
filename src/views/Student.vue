@@ -94,10 +94,14 @@ export default {
       //this should probably be in computed with the v-if directive hiding chart until it loads
       .then(() => {
           //takes first item in eventRecords and makes the keys the headers for the table
-          
           this.eventRecordsForChart.push(Object.keys(this.eventRecords[0]))
           this.capitalizeChartHeaders()
-
+          
+          //sort eventRecords by date
+          this.eventRecords.sort((a,b) => {
+            const timeStampA = a.timestamp
+            const timeStampB = b.timestamp
+          })
           this.eventRecords.forEach(record => {
               this.totalHours += record.hours
               //pushes object values for the chart
