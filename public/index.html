@@ -37,7 +37,34 @@
       document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, modalOptions);
-      });      
+      });
+      
+      datePickerOptions = {
+
+      }
+
+      //date picker
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, datePickerOptions);
+      });
+
+      //time picker 
+
+      timePickerOptions = { }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.timepicker');
+        var instances = M.Timepicker.init(elems, timePickerOptions);
+      });
+
+      //select menu
+      selectOptions = { }
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems, selectOptions);
+      });
+
     </script>
   </body>
 </html>
