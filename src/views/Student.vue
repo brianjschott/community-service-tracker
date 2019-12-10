@@ -92,7 +92,6 @@ export default {
               eventRecord.eventID = doc.id
               this.eventRecords.push(eventRecord)
           })
-
       })
       //tallies up all hours for events into totalHours
       //also pushes each object as an array, onto a separate array to be given directly to the chart
